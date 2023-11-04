@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recibo</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Create a receipt</h1>
+        </header>
+
+        <main>
+            <form id="create-receipt">
+                <section class="items" id="section-items">
+                </section>
+                <section class="add-item">
+                    <p>Add item</p>
+                    <button type="button" class="button secondary" id="btn-add-item">
+                        <img src="img/ic-add.png" width="20px"/>
+                    </button>
+                </section>
+                <section class="receipt-info-inputs">
+                    <input type="text" placeholder="Company name" value="" data-value-name />
+                    <input placeholder="Order date" class="textbox-n" value="" type="text" data-value-date />
+                    <textarea rows="4" cols="50" placeholder="Custom message" value="" data-value-message></textarea>
+                </section>
+
+                <button type="submit" class="button primary btn-create-receipt" id="btn-create-receipt">create receipt</button>
+            </form>
+        </main>
+    </div>
+    <script src="js/index.js"></script>
+</body>
+
+</html>
