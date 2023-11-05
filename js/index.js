@@ -13,8 +13,8 @@ const sectionItems = document.getElementById('section-items')
 const newItem = `
     <section class="item" id="section-item" data-item>
             <input type="text" class="input-item" placeholder="Item" data-value-title required />
-            <input type="number" class="input-item" placeholder="Amount" data-value-amount required />
-            <input type="number" class="input-item" placeholder="Value" data-value-value required />
+            <input type="number" class="input-item" placeholder="Amount" pattern="\d*" data-value-amount required />
+            <input type="number" class="input-item" placeholder="Value" pattern="\d*" data-value-value required />
             <div class="button secondary" data-remove><img src="img/ic-delete.png" width="20px"/></div>
     </section>
 `
