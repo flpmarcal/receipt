@@ -18,24 +18,21 @@ const newItem = `
             <div class="button secondary" data-remove><img src="img/ic-delete.png" width="20px"/></div>
     </section>
 `
-
-checkLocalData()
+if (itemsData) {
+    checkLocalData()
+}
 
 function checkLocalData() {
-    if (localStorage.length > 0) {
-        items.forEach((item) => {
-            sectionItems.innerHTML += `
-            <section class="item" id="section-item" data-item>
-                <input type="text" class="input-item" placeholder="Item" data-value-title required value="${item.title}"/>
-                <input type="number" class="input-item" placeholder="Amount" data-value-amount required value="${item.amount}"/>
-                <input type="number" class="input-item" placeholder="Value" data-value-value required value="${item.value}"/>
-                <div class="button secondary" data-remove data-local><img src="img/ic-delete.png" width="20px"/></div>
-            </section>
-            `
-        })
-    } else {
-        return
-    }
+    items.forEach((item) => {
+        sectionItems.innerHTML += `
+        <section class="item" id="section-item" data-item>
+            <input type="text" class="input-item" placeholder="Item" data-value-title required value="${item.title}"/>
+            <input type="number" class="input-item" placeholder="Amount" data-value-amount required value="${item.amount}"/>
+            <input type="number" class="input-item" placeholder="Value" data-value-value required value="${item.value}"/>
+            <div class="button secondary" data-remove data-local><img src="img/ic-delete.png" width="20px"/></div>
+        </section>
+        `
+    })
 }
 
 // Escuta o evento de focus no 'inputDate'.
@@ -52,6 +49,9 @@ inputDate.addEventListener('blur', () => {
 
 // Escuta o evento de 'click' no 'btnAddItem'.
 btnAddItem.addEventListener('click', (addItemEvent) => {
+
+    console.log('evento funciona')
+
     // Executa a função 'addItemOnList'.
     addItemOnList()
 
