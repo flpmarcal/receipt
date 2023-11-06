@@ -6,7 +6,6 @@ const receiptInfo = JSON.parse(receiptInfoData)
 
 const listItems = document.getElementById('receipt-list-items')
 
-
 function calcTotal() {
 
     let itemsValues = []
@@ -18,10 +17,10 @@ function calcTotal() {
 
     let sum = itemsValues.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
     const totalValueElement = `<li class="list-item">
-    <span class="item-title total">TOTAL</span>
-    <span class="item-amount total"> </span>
-    <span class="item-value total">$ ${sum}</span>
-</li>`
+        <span class="item-title total">TOTAL</span>
+        <span class="item-amount total"> </span>
+        <span class="item-value total">$ ${sum}</span>
+    </li>`
 
     listItems.insertAdjacentHTML('beforeend', totalValueElement)
 }

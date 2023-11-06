@@ -22,8 +22,8 @@
         </header>
 
         <main>
-            <form id="create-receipt">
-                <section class="items" id="section-items">
+            <form id="create-receipt" data-form>
+                <section class="items" id="items-section">
                 </section>
                 <section class="add-item">
                     <p>Add item</p>
@@ -32,9 +32,9 @@
                     </a>
                 </section>
                 <section class="receipt-info-inputs">
-                    <input type="text" placeholder="Company name" value="" data-value-name />
-                    <input placeholder="Order date" class="textbox-n" value="" type="text" data-value-date />
-                    <textarea rows="4" cols="50" placeholder="Custom message" value="" data-value-message></textarea>
+                    <input name="name" type="text" placeholder="Company name" value="" data-value-name />
+                    <input name="date" placeholder="Order date" class="textbox-n" value="" type="text" data-value-date />
+                    <textarea name="message" rows="3" cols="50" placeholder="Custom message" value="" data-value-message></textarea>
                 </section>
 
                 <button type="submit" class="button primary btn-create-receipt" id="btn-create-receipt">create receipt</button>
