@@ -24,7 +24,7 @@ const newItem = `
     </section>
 `
 
-if (itemsData) {
+if (items) {
     displayLocalData()
     monitorRemoveButtons()
 }
