@@ -1,38 +1,51 @@
-
 const btnAddItem = document.getElementById('btn-add-item')
-const btnCreateReceipt = document.getElementById('btn-create-receipt')
 
 const inputName = document.querySelector('[data-value-name]')
 const inputDate = document.querySelector('[data-value-date]')
 const inputCustomMessage = document.querySelector('[data-value-message]')
 
+const form = document.querySelector('[data-form]')
+const btnCreateReceipt = document.getElementById('btn-create-receipt')
+
 const itemsData = localStorage.getItem('items-data');
 const items = JSON.parse(itemsData)
 
-const sectionItems = document.getElementById('section-items')
+const receiptInfoData = localStorage.getItem('receipt-info-data')
+const receiptInfo = JSON.parse(receiptInfoData)
+
+const sectionItems = document.getElementById('items-section')
 const newItem = `
     <section class="item" id="section-item" data-item>
-            <input type="text" class="input-item" placeholder="Item" data-value-title required />
-            <input type="number" class="input-item" placeholder="Amount" pattern="\d*" data-value-amount required />
-            <input type="number" class="input-item" placeholder="Value" pattern="\d*" data-value-value required />
-            <div class="button secondary" data-remove><img src="img/ic-delete.png" width="20px"/></div>
+            <input type="text" class="input-item" placeholder="Item" value="" data-value-title />
+            <input type="number" class="input-item" placeholder="Amount" value="" pattern="\d*" data-value-amount />
+            <span class="multiplier">X</span>
+            <input type="number" class="input-item" placeholder="Value" value="" pattern="\d*" data-value-value />
+            <div class="button secondary" data-btn-remove data-local><img src="img/ic-delete.png" width="20px"/></div>
     </section>
 `
+
 if (itemsData) {
-    checkLocalData()
+    displayLocalData()
+    monitorRemoveButtons()
 }
 
-function checkLocalData() {
+function displayLocalData() {
     items.forEach((item) => {
-        sectionItems.innerHTML += `
-        <section class="item" id="section-item" data-item>
-            <input type="text" class="input-item" placeholder="Item" data-value-title required value="${item.title}"/>
-            <input type="number" class="input-item" placeholder="Amount" data-value-amount required value="${item.amount}"/>
-            <input type="number" class="input-item" placeholder="Value" data-value-value required value="${item.value}"/>
-            <div class="button secondary" data-remove data-local><img src="img/ic-delete.png" width="20px"/></div>
-        </section>
+        const newItemLocal = `
+            <section class="item" id="section-item" data-item>
+                <input type="text" class="input-item" placeholder="Item" value="${item.title}" data-value-title />
+                <input type="number" class="input-item" placeholder="Amount" value="${item.amount}" data-value-amount />
+                <span class="multiplier">X</span>
+                <input type="number" class="input-item" placeholder="Value" value="${item.value}" data-value-value />
+                <div class="button secondary" data-btn-remove data-local><img src="img/ic-delete.png" width="20px"/></div>
+            </section>
         `
+        sectionItems.insertAdjacentHTML('beforeend', newItemLocal)
     })
+
+    inputName.value = receiptInfo[0]
+    inputDate.value = receiptInfo[1]
+    inputCustomMessage.value = receiptInfo[2]
 }
 
 // Escuta o evento de focus no 'inputDate'.
@@ -50,11 +63,10 @@ inputDate.addEventListener('blur', () => {
 // Escuta o evento de 'click' no 'btnAddItem'.
 btnAddItem.addEventListener('click', (addItemEvent) => {
 
-    console.log('evento funciona')
-
-    // Executa a função 'addItemOnList'.
+    // Executa a função 'addItemOnList' e 'monitorRemoveButtons'.
     addItemOnList()
-
+    monitorRemoveButtons()
+    
     // Dá o focus no próximo input adicionado.
     const lastItem = sectionItems.lastElementChild
     const firstInputLastItem = lastItem.querySelector('[data-value-title]')
@@ -62,37 +74,42 @@ btnAddItem.addEventListener('click', (addItemEvent) => {
 })
 
 // Escuta o evento de 'click' no 'btnCreateReceipt'.
-btnCreateReceipt.addEventListener('click', (createReceiptEvent) => {
+form.addEventListener('submit', (createReceiptEvent) => {
     // Previne o comportamento padrão do evento 'createReceiptEvent'.
     createReceiptEvent.preventDefault()
-    // Limpa o 'localStorage'.
+    // Limpa o que estava no 'localStorage'.
     localStorage.clear()
-    // Roda a função 'dataCapture'.
+    // Roda a função 'dataCapture' para preencher o localStorage com novos dados preenchidos.
     dataCapture()
     // Redireciona para a tela de criação do recibo.
     window.location.href = './receipt.html';
 })
 
+// Cria a função que monitora os novos bot!oes de remover criados.
+function monitorRemoveButtons() {
+    const removeButtons = document.querySelectorAll('[data-btn-remove]')
+    listenRemoveButtons(removeButtons)
+}
+
 // Cria a função 'addItemOnList'.
 function addItemOnList() {
     // Adiciona ao fim do node de 'sectionItems' o conteudo da const 'newItem'.
     sectionItems.insertAdjacentHTML('beforeend', newItem)
+}
 
-    // Cria a const 'btnRemoveItems' que seleciona os botões de remover pertencentes aos itens recém criados.
-    const btnRemoveItems = document.querySelectorAll('[data-remove]')
-
-    // Para cada 'btnRemoveItem' criado.
-    btnRemoveItems.forEach((btnRemoveItem) => {
+function listenRemoveButtons(removeButtons) {
+    // Para cada 'btnRemoveItem' na tela.
+    removeButtons.forEach((removeButton) => {
         // Escuta o evento de 'click'.
-        btnRemoveItem.addEventListener('click', function() {
+        removeButton.addEventListener('click', function() {
+
             // Cria a const 'removeFromLocalDataCheck' que retorna true se o botão clicado é de um item gerado pelo 'localStorage'.
-            const itemFromLocalDataCheck = btnRemoveItem.hasAttribute('data-local')
+            const itemFromLocalDataCheck = removeButton.hasAttribute('data-local')
             
             // Se o botão clicado for de um item vindo do local storage.
             if (itemFromLocalDataCheck) {
-
-                // Captura o valor daquele item.
-                const itemToBeRemoved = btnRemoveItem.parentNode
+                // Captura o valor do titulo daquele item.
+                const itemToBeRemoved = removeButton.parentNode
                 const itemTitleInput = itemToBeRemoved.querySelector('[data-value-title]')
                 const itemTitle = itemTitleInput.value
 
@@ -108,8 +125,9 @@ function addItemOnList() {
                 // Remove o node daquele item da tela.
                 itemToBeRemoved.remove();
             } else {
+
                 // Cria a const 'itemToBeRemoved' que armazena o node pai do botão de remover clicado.
-                const itemToBeRemoved = btnRemoveItem.parentNode
+                const itemToBeRemoved = removeButton.parentNode
                 // Remove o 'itemToBeRemoved', node pai do botão de remover.
                 itemToBeRemoved.remove()
             }
@@ -130,14 +148,9 @@ function dataCapture() {
     sectionItem.forEach((nodeItem) => {
 
         // Captura os inputs no HTML que armazenam titulo, amount e value do item.
-        const inputTitle = nodeItem.querySelector('[data-value-title]')
-        const inputAmount = nodeItem.querySelector('[data-value-amount]')
-        const inputValue = nodeItem.querySelector('[data-value-value]')
-
-        // Captura apenas o valor de titulo, amount e value dentro dos inputs.
-        const itemTitle = inputTitle.value
-        const itemAmount = inputAmount.value
-        const itemValue = inputValue.value
+        const itemTitle = nodeItem.querySelector('[data-value-title]').value
+        const itemAmount = nodeItem.querySelector('[data-value-amount]').value
+        const itemValue = nodeItem.querySelector('[data-value-value]').value
 
         // Atualiza o array 'tempItemList' com as infos dos item daquela iteração.
         tempItemList.push({
@@ -150,7 +163,7 @@ function dataCapture() {
     // Cria o array 'itemsList' e popula com os itens da array 'tempItemList'.
     const itemsList = [...tempItemList]
 
-    // Cria as consts que acessam os valores do que foi digitado nos inputs.
+    // Cria as consts que acessam os valores do que foi digitado nos inputs de informações extras.
     const nameValue = inputName.value
     const dateValue = inputDate.value
     const customMessageValue = inputCustomMessage.value
