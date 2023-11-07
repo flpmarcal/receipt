@@ -20,7 +20,7 @@ const newItem = `
             <input type="number" class="input-item" placeholder="Amount" value="" pattern="\d*" data-value-amount />
             <span class="multiplier">X</span>
             <input type="number" class="input-item" placeholder="Value" value="" pattern="\d*" data-value-value />
-            <div class="button secondary" data-btn-remove data-local><img src="img/ic-delete.png" width="20px"/></div>
+            <div class="button secondary" data-btn-remove><img src="img/ic-delete.png" width="20px"/></div>
     </section>
 `
 
@@ -79,7 +79,7 @@ form.addEventListener('submit', (createReceiptEvent) => {
     createReceiptEvent.preventDefault()
     // Limpa o que estava no 'localStorage'.
     localStorage.clear()
-    // Roda a função 'dataCapture' para preencher o localStorage com novos dados preenchidos.
+    // Roda a função 'dataCapture' para preencher o localStorage com os novos dados preenchidos.
     dataCapture()
     // Redireciona para a tela de criação do recibo.
     window.location.href = './receipt.html';
@@ -87,7 +87,7 @@ form.addEventListener('submit', (createReceiptEvent) => {
 
 // Cria a função que monitora os novos bot!oes de remover criados.
 function monitorRemoveButtons() {
-    const removeButtons = document.querySelectorAll('[data-btn-remove]')
+    let removeButtons = document.querySelectorAll('[data-btn-remove]')
     listenRemoveButtons(removeButtons)
 }
 
@@ -102,8 +102,7 @@ function listenRemoveButtons(removeButtons) {
     removeButtons.forEach((removeButton) => {
         // Escuta o evento de 'click'.
         removeButton.addEventListener('click', function() {
-
-            // Cria a const 'removeFromLocalDataCheck' que retorna true se o botão clicado é de um item gerado pelo 'localStorage'.
+            // Cria a const 'itemFromLocalDataCheck' que retorna true se o botão clicado é de um item gerado pelo 'localStorage'.
             const itemFromLocalDataCheck = removeButton.hasAttribute('data-local')
             
             // Se o botão clicado for de um item vindo do local storage.
@@ -113,7 +112,7 @@ function listenRemoveButtons(removeButtons) {
                 const itemTitleInput = itemToBeRemoved.querySelector('[data-value-title]')
                 const itemTitle = itemTitleInput.value
 
-                // Busca o index daquele item.
+                // Busca o index daquele item na array do local storage.
                 const itemFound = items.findIndex((item) => item.title === itemTitle)
 
                 // Remove aquele item do array 'items'.
@@ -125,7 +124,6 @@ function listenRemoveButtons(removeButtons) {
                 // Remove o node daquele item da tela.
                 itemToBeRemoved.remove();
             } else {
-
                 // Cria a const 'itemToBeRemoved' que armazena o node pai do botão de remover clicado.
                 const itemToBeRemoved = removeButton.parentNode
                 // Remove o 'itemToBeRemoved', node pai do botão de remover.
