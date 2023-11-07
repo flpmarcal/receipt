@@ -12,24 +12,22 @@
     <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
-
-    <script src="js/receipt.js" defer></script>
 </head>
 
 <body>
-
     <div class="container">
-        <main class="receipt">
+        <main class="receipt" id="receipt-container">
             <h2>RECEIPT</h2>
             <ul class="receipt-data-list">
                 <li id="receiptName"></li>
                 <li id="receiptDate"></li>
             </ul>
-            <ul class="list-recipt-items" id="receipt-list-items">
+            <ul class="list-recipt-items" id="receipt-list">
             </ul>
             <p class="custom-message" id="receiptMessage"></p>
         </main>
     </div>
+    <script src="js/receipt.js"></script>
 </body>
 
 </html>
