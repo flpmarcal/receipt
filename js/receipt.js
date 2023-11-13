@@ -29,9 +29,9 @@ function generateReceipt() {
     const paragraphMessage = document.getElementById('receiptMessage')
 
     // Cria as consts que armazema as infos extras do recibo.
-    const nameValue = receiptInfo[0]
-    const dateValue = receiptInfo[1]
-    const msgValue = receiptInfo[2]
+    const nameValue = receiptInfo.company
+    const dateValue = receiptInfo.date
+    const msgValue = receiptInfo.message
 
     // Insere nos elementos os valores dos campos nome, data e custom message
     nameElement.innerHTML = `${nameValue}`
