@@ -1,10 +1,10 @@
 const receiptContainer = document.getElementById('receipt-container')
 const listItems = document.getElementById('receipt-list')
 
-const itemsData = localStorage.getItem('items-data')
+const itemsData = localStorage.getItem('items-list')
 const items = JSON.parse(itemsData)
 
-const receiptInfoData = localStorage.getItem('receipt-info-data')
+const receiptInfoData = localStorage.getItem('extra-info')
 const receiptInfo = JSON.parse(receiptInfoData)
 
 generateReceipt()
@@ -16,7 +16,7 @@ function generateReceipt() {
         listItems.innerHTML += `<li class="list-item">
             <span class="item-title">${item.title}</span>
             <span class="item-amount">${item.amount}x </span>
-            <span class="item-value">$ ${item.value}</span>
+            <span class="item-value">$ ${item.price}</span>
         </li>`
     })
     
@@ -44,7 +44,7 @@ function calcTotal() {
     let itemsValues = []
 
     items.forEach((item) => {
-        const valueToNumber = Number(item.value)
+        const valueToNumber = Number(item.price)
         itemsValues.push(valueToNumber)
     })
 
