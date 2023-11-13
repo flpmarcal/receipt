@@ -22,27 +22,29 @@
         </header>
 
         <main>
-            <form id="create-receipt" data-form>
-                <section class="items" id="items-section">
-                </section>
-                <section class="add-item">
-                    <p>Add item</p>
-                    <a class="button secondary" id="btn-add-item">
-                        <img src="img/ic-add.png" width="20px"/>
-                    </a>
-                </section>
-                <section class="receipt-info-inputs">
-                    <input name="name" type="text" placeholder="Company name" value="" data-value-name />
-                    <input name="date" placeholder="Order date" class="textbox-n" value="" type="text" data-value-date />
-                    <textarea name="message" rows="3" cols="50" placeholder="Custom message" value="" data-value-message></textarea>
+            <form id="create-receipt-form">
+
+                <section class="items-container" id="items-container">
+
                 </section>
 
-                <button type="submit" class="button primary btn-create-receipt" id="btn-create-receipt">create receipt</button>
+                <section class="add-item-container" id="add-item-container">
+                    <p>Add item</p>
+                    <button type="button" class="button secondary btn-add" id="btn-add-item"></button>
+                </section>
+
+                <section class="extra-info-container" id="extra-info-container">
+                    <input name="company" type="text" placeholder="Company name" value="" data-company />
+                    <input name="date" type="text" placeholder="Order date" class="textbox-n" value="" type="text" data-date />
+                    <textarea name="message" rows="3" cols="50" placeholder="Custom message" value="" data-message></textarea>
+                </section>
+
+                <button type="submit" class="button primary" id="create-receipt-btn">Create receipt</button>
+
             </form>
         </main>
     </div>
     <script src="js/index.js"></script>
-    <script src="js/validations.js"></script>
 </body>
 
 </html>
