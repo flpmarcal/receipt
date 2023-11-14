@@ -186,11 +186,6 @@ function verifyTitles(titleField) {
     if (titleField.value == '') {
         titleField.classList.add('item-field-invalid')
         titleField.addEventListener('input', e => e.target.classList.remove('item-field-invalid'))
-
-        const itemContainer = titleField.parentNode
-        const itemValidation = itemContainer.querySelector('[data-validation]')
-        itemValidation.style.display = 'flex'
-        itemValidation.innerHTML += 'Title cannot be empty.'
         return false
     } else {
         return true
@@ -204,11 +199,6 @@ function verifyNumbers(numberField) {
     if (!fieldTest || numberField.value == '') {
         numberField.classList.add('item-field-invalid')
         numberField.addEventListener('input', e => e.target.classList.remove('item-field-invalid'))
-
-        const itemContainer = numberField.parentNode
-        const itemValidation = itemContainer.querySelector('[data-validation]')
-        itemValidation.style.display = 'flex'
-        itemValidation.innerHTML += `Only numbers allowed in ${numberField.name} field.`
         return false
     } else {
         return true
