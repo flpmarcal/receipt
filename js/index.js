@@ -36,11 +36,12 @@ function displayLocalData() {
 function newlItemElement(item) {
     const newItem = `
     <section class="item-container" data-item>
-        <input name="itemTitle" type="text" class="input-item" placeholder="Item" value="${item.title}" data-source="${item.source}" data-title />
-        <input name="itemAmount" type="text" class="input-item" placeholder="Amount" value="${item.amount}" data-source="${item.source}" data-amount />
+        <input name="Title" type="text" class="input-item" placeholder="Item title" value="${item.title}" data-source="${item.source}" data-title />
+        <input name="Amount" type="text" class="input-item" placeholder="Amount" value="${item.amount}" data-source="${item.source}" data-amount />
         <span class="multiplier">X</span>
-        <input name="itemPrice" type="text" class="input-item" placeholder="0.00" value="${item.price}" autocomplete="off" maxlength="10" data-source="${item.source}" data-price />
+        <input name="Price" type="text" class="input-item" placeholder="0.00" value="${item.price}" autocomplete="off" maxlength="10" data-source="${item.source}" data-price />
         <div class="button secondary btn-delete" data-source="${item.source}" data-btn-source="${item.source}"></div>
+        <span class="item-validation" data-validation></span>
     </section>
     `
     return newItem
@@ -58,8 +59,6 @@ addItemBtn.addEventListener('click', () => {
     const firstInputLastItem = lastItem.querySelector('[data-title]')
     firstInputLastItem.focus()
 })
-
-
 
 itemsContainer.addEventListener('click', (e) => {
     const target = e.target
@@ -88,22 +87,15 @@ itemsContainer.addEventListener('keydown', (e) => {
 })
 
 function formatPrice(priceField) {
-    const plainValue = priceField.value
-    function hasOneDigitAfterDecimal(num) {
-        var numStr = num.toString();
-        var decimalIndex = numStr.indexOf('.');
-        if (decimalIndex === -1) {
-            return false;
-        }
-        var digitsAfterDecimal = numStr.length - decimalIndex - 1;
-        return digitsAfterDecimal === 1;
-    }
-    const checkFloating = priceField.value.includes('.')
-    const checkFloatingAmount = hasOneDigitAfterDecimal(priceField.value)
-    if (checkFloating && checkFloatingAmount) {
-        priceField.value = plainValue + '0'
-    } else if (!checkFloating && plainValue != 0) {
-        priceField.value = plainValue + '.00'
+    const plainValue = Number(priceField.value)
+    const formattedPrice = plainValue.toFixed(2)
+
+    if (plainValue == 0) {
+        priceField.value = ''
+    } else if (Number.isNaN(plainValue)) {
+        priceField.value = ''
+    } else {
+        priceField.value = formattedPrice
     }
 }
 
@@ -111,6 +103,10 @@ createReceiptForm.addEventListener('submit', (e) => {
     e.preventDefault()
     const itemsContainers = itemsContainer.querySelectorAll('[data-item]')
     saveItems(itemsContainers)
+})
+
+createReceiptBtn.addEventListener('click', (e) => {
+    document.querySelectorAll('[data-price]').forEach(inputPrice => inputPrice.blur())
 })
 
 function saveItems(itemsToBeSaved) {
@@ -190,6 +186,11 @@ function verifyTitles(titleField) {
     if (titleField.value == '') {
         titleField.classList.add('item-field-invalid')
         titleField.addEventListener('input', e => e.target.classList.remove('item-field-invalid'))
+
+        const itemContainer = titleField.parentNode
+        const itemValidation = itemContainer.querySelector('[data-validation]')
+        itemValidation.style.display = 'flex'
+        itemValidation.innerHTML += 'Title cannot be empty.'
         return false
     } else {
         return true
@@ -203,6 +204,11 @@ function verifyNumbers(numberField) {
     if (!fieldTest || numberField.value == '') {
         numberField.classList.add('item-field-invalid')
         numberField.addEventListener('input', e => e.target.classList.remove('item-field-invalid'))
+
+        const itemContainer = numberField.parentNode
+        const itemValidation = itemContainer.querySelector('[data-validation]')
+        itemValidation.style.display = 'flex'
+        itemValidation.innerHTML += `Only numbers allowed in ${numberField.name} field.`
         return false
     } else {
         return true
