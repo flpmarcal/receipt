@@ -1,59 +1,53 @@
 const receiptContainer = document.getElementById('receipt-container')
 const listItems = document.getElementById('receipt-list')
 
-const itemsData = localStorage.getItem('items-list')
-const items = JSON.parse(itemsData)
+const itemsListJson = localStorage.getItem('items-list')
+const itemsList = JSON.parse(itemsListJson)
 
-const receiptInfoData = localStorage.getItem('extra-info')
-const receiptInfo = JSON.parse(receiptInfoData)
+const extraInfoJson = localStorage.getItem('extra-info')
+const extraInfo = JSON.parse(extraInfoJson)
 
-generateReceipt()
+const nameElement = document.getElementById('receiptName')
+const dateElement = document.getElementById('receiptDate')
+const paragraphMessage = document.getElementById('receiptMessage')
 
-function generateReceipt() {
+itemsList.forEach(function(item) {
+    listItems.innerHTML += `
+    <li class="list-item">
+        <span class="item-title">${item.title}</span>
+        <span class="item-amount">${item.amount}x </span>
+        <span class="item-value">$ ${item.price}</span>
+    </li>
+    `
+})
 
-    // Gera a lista de items do recibo com base nos dados de 'items'.
-    items.forEach(function(item) {
-        listItems.innerHTML += `<li class="list-item">
-            <span class="item-title">${item.title}</span>
-            <span class="item-amount">${item.amount}x </span>
-            <span class="item-value">$ ${item.price}</span>
-        </li>`
-    })
-    
-    // Executa a função 'calcTotal'.
-    calcTotal()
+const companyValue = extraInfo.company
+const dateValue = extraInfo.date
+const msgValue = extraInfo.message
 
-    // Cria as consts que armazenam os elementos nos quais o conteúdo das infos extras devem ser adicionados.
-    const nameElement = document.getElementById('receiptName')
-    const dateElement = document.getElementById('receiptDate')
-    const paragraphMessage = document.getElementById('receiptMessage')
+nameElement.innerHTML = `${companyValue}`
+dateElement.innerHTML = `${dateValue}`
+paragraphMessage.innerHTML = `${msgValue}`
 
-    // Cria as consts que armazema as infos extras do recibo.
-    const nameValue = receiptInfo.company
-    const dateValue = receiptInfo.date
-    const msgValue = receiptInfo.message
-
-    // Insere nos elementos os valores dos campos nome, data e custom message
-    nameElement.innerHTML = `${nameValue}`
-    dateElement.innerHTML = `${dateValue}`
-    paragraphMessage.innerHTML = `${msgValue}`
-}
+calcTotal()
 
 function calcTotal() {
-
     let itemsValues = []
 
-    items.forEach((item) => {
+    itemsList.forEach((item) => {
         const valueToNumber = Number(item.price)
         itemsValues.push(valueToNumber)
     })
 
     let sum = itemsValues.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-    const totalValueElement = `<li class="list-item">
+    sum = sum.toFixed(2)
+    const totalValueElement = `
+    <li class="list-item">
         <span class="item-title total">TOTAL</span>
         <span class="item-amount total"> </span>
         <span class="item-value total">$ ${sum}</span>
-    </li>`
+    </li>
+    `
 
     listItems.insertAdjacentHTML('beforeend', totalValueElement)
 }
